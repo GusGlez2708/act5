@@ -5,18 +5,18 @@
  * destructura 'NaveImperial' de él.
  * (Esta es la CORRECCIÓN 3, que es correcta).
  */
-const { NaveImperial } = require('../models'); // <-- Así debe ser la importación
+const db = require('../models');
 
 const getAllNaves = async () => {
-  return await NaveImperial.findAll(); // <-- Usar NaveImperial directamente
+  return await db.NaveImperial.findAll();
 };
 
 const getNaveById = async (id) => {
-  return await NaveImperial.findByPk(id); // <-- Usar NaveImperial directamente
+  return await db.NaveImperial.findByPk(id);
 };
 
 const createNave = async (naveData) => {
-  return await NaveImperial.create(naveData); // <-- Usar NaveImperial directamente
+  return await db.NaveImperial.create(naveData);
 };
 
 const updateNave = async (id, naveData) => {
