@@ -1,16 +1,11 @@
-const { User } = require('../models/UserModel');
-const { Profile } = require('../models/ProfileModel');
+const db = require('../models');
 
 class UserService {
     async getAllUsers() {
         try {
-            return await User.findAll({
+            return await db.User.findAll({
                 where: { activo: true },
-                include: [{
-                    model: Profile,
-                    as: 'perfil',
-                    attributes: ['id', 'nombre']
-                }],
+                // Removed include for Profile as it's no longer available
                 order: [['nombre', 'ASC']]
             });
         } catch (error) {
@@ -20,12 +15,8 @@ class UserService {
 
     async getUserById(id) {
         try {
-            const user = await User.findByPk(id, {
-                include: [{
-                    model: Profile,
-                    as: 'perfil',
-                    attributes: ['id', 'nombre']
-                }]
+            const user = await db.User.findByPk(id, {
+                // Removed include for Profile as it's no longer available
             });
             
             if (!user) {
@@ -47,9 +38,9 @@ class UserService {
                 FechaBaja: currentDate
             };
             
-            const user = await User.create(dataWithAudit);
+            const user = await db.User.create(dataWithAudit);
             
-            // Retornar el usuario con el perfil incluido
+            // Retornar el usuario (without profile as it's removed)
             return await this.getUserById(user.id);
         } catch (error) {
             throw new Error(`Error al crear usuario: ${error.message}`);
@@ -58,7 +49,7 @@ class UserService {
 
     async updateUser(id, userData) {
         try {
-            const user = await User.findByPk(id);
+            const user = await db.User.findByPk(id);
             if (!user) {
                 throw new Error('Usuario no encontrado');
             }
@@ -71,7 +62,7 @@ class UserService {
             
             await user.update(dataWithAudit);
             
-            // Retornar el usuario actualizado con el perfil incluido
+            // Retornar el usuario actualizado (without profile as it's removed)
             return await this.getUserById(id);
         } catch (error) {
             throw new Error(`Error al actualizar usuario: ${error.message}`);
@@ -80,7 +71,7 @@ class UserService {
 
     async deleteUser(id) {
         try {
-            const user = await User.findByPk(id);
+            const user = await db.User.findByPk(id);
             if (!user) {
                 throw new Error('Usuario no encontrado');
             }
@@ -100,13 +91,9 @@ class UserService {
 
     async getUserByEmail(email) {
         try {
-            return await User.findOne({
+            return await db.User.findOne({
                 where: { correo: email, activo: true },
-                include: [{
-                    model: Profile,
-                    as: 'perfil',
-                    attributes: ['id', 'nombre']
-                }]
+                // Removed include for Profile as it's no longer available
             });
         } catch (error) {
             throw new Error(`Error al buscar usuario por email: ${error.message}`);
