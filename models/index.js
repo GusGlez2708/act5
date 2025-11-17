@@ -1,7 +1,8 @@
 /**
- * CORRECCIÓN 2:
- * Se restaura el 'models/index.js' a su rol original de "agregador".
- * Simplemente importa todos los modelos y los vuelve a exportar.
+ * ARCHIVO 2 (DE 3)
+ * Este archivo es el "agregador".
+ * Importa todos los modelos (incluyendo el nuevo) y los exporta como un solo objeto.
+ * (Esta es la CORRECCIÓN 2, que es correcta).
  */
 
 // Importar todos los modelos existentes
@@ -13,7 +14,6 @@ const { New } = require('./NewModel');
 
 // --- AÑADIR ESTA LÍNEA PARA EL NUEVO MODELO ---
 const { NaveImperial } = require('./NaveImperialModel');
-// ------------------------------------------
 
 // Exportar todos los modelos como un solo objeto
 module.exports = {
@@ -22,5 +22,5 @@ module.exports = {
     Category,
     User,
     New,
-    NaveImperial // Añadir el nuevo modelo a la exportación
+    NaveImperial // <-- Añadir el nuevo modelo a la exportación
 };

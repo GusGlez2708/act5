@@ -1,13 +1,14 @@
 /**
- * CORRECCIÓN 2:
- * Se restaura el modelo al patrón original de tu proyecto.
- * Importa 'connection' directamente desde 'config.db' y exporta el modelo en un objeto.
+ * ARCHIVO 1 (DE 3)
+ * Este archivo define el modelo.
+ * Importa la 'connection' y exporta un objeto { NaveImperial }.
+ * (Esta es la CORRECCIÓN 2, que es correcta).
  */
 const { DataTypes } = require('sequelize');
 const { connection } = require('../config.db'); // Importar la conexión directamente
 
 const NaveImperial = connection.define('NaveImperial', {
- id: {
+id: {
  type: DataTypes.INTEGER,
  primaryKey: true,
  autoIncrement: true,
@@ -15,8 +16,8 @@ const NaveImperial = connection.define('NaveImperial', {
 nombre: {
  type: DataTypes.STRING(100),
  allowNull: false,
-},
-clase: {
+ },
+ clase: {
  type: DataTypes.STRING(100),
  allowNull: false,
  },

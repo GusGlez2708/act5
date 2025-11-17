@@ -1,22 +1,22 @@
 /**
- * CORRECCIÓN:
- * Se ha modificado la forma en que se importa el modelo.
- * En lugar de: const { NaveImperial } = require('../models');
- * Se importa el objeto 'db' completo, que es el patrón que sigue tu proyecto.
- * Y se usa 'db.NaveImperial' en todas las funciones.
+ * ARCHIVO 3 (DE 3)
+ * Este archivo es el servicio.
+ * Importa el archivo "agregador" (models/index.js) y
+ * destructura 'NaveImperial' de él.
+ * (Esta es la CORRECCIÓN 3, que es correcta).
  */
-const db = require('../models'); // <-- SE IMPORTA 'db' COMPLETO
+const { NaveImperial } = require('../models'); // <-- Así debe ser la importación
 
 const getAllNaves = async () => {
-  return await db.NaveImperial.findAll(); // <-- SE USA db.NaveImperial
+  return await NaveImperial.findAll(); // <-- Usar NaveImperial directamente
 };
 
 const getNaveById = async (id) => {
-  return await db.NaveImperial.findByPk(id); // <-- SE USA db.NaveImperial
+  return await NaveImperial.findByPk(id); // <-- Usar NaveImperial directamente
 };
 
 const createNave = async (naveData) => {
-  return await db.NaveImperial.create(naveData); // <-- SE USA db.NaveImperial
+  return await NaveImperial.create(naveData); // <-- Usar NaveImperial directamente
 };
 
 const updateNave = async (id, naveData) => {
