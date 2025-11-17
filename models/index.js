@@ -1,7 +1,7 @@
 'use strict';
 
 const { Sequelize, DataTypes } = require('sequelize');
-const connection = require('../config.db');
+const { connection } = require('../config.db');
 
 const db = {};
 
