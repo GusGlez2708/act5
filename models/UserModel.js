@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const { connection } = require('../config.db');
-const { Profile } = require('./ProfileModel');
 
 const User = connection.define('user', {
     id: {
@@ -9,13 +8,9 @@ const User = connection.define('user', {
         autoIncrement: true,
         allowNull: false
     },
-    perfil_id: {
+    perfil_id: { // This field will now just be a BIGINT without a foreign key reference
         type: DataTypes.BIGINT,
-        allowNull: false,
-        references: {
-            model: Profile,
-            key: 'id'
-        }
+        allowNull: false
     },
     nombre: {
         type: DataTypes.STRING(100),
@@ -78,16 +73,6 @@ const User = connection.define('user', {
     timestamps: true
 });
 
-// Relación: User pertenece a Profile
-User.belongsTo(Profile, { 
-    as: 'perfil', 
-    foreignKey: 'perfil_id' 
-});
-
-// Relación inversa: Profile tiene muchos Users
-Profile.hasMany(User, { 
-    as: 'usuarios', 
-    foreignKey: 'perfil_id' 
-});
+// No associations to Profile as it has been removed.
 
 module.exports = { User };
