@@ -1,45 +1,37 @@
 /**
- * CORRECCIÓN:
- * Se cambia la exportación para que sea una función que acepte (sequelize, DataTypes),
- * siguiendo el mismo patrón que tus otros modelos (UserModel, CategoryModel, etc.).
- * Se elimina la importación directa de '../config.db' porque 'sequelize' (la conexión)
- * será inyectada por 'models/index.js'.
+ * CORRECCIÓN 2:
+ * Se restaura el modelo al patrón original de tu proyecto.
+ * Importa 'connection' directamente desde 'config.db' y exporta el modelo en un objeto.
  */
 const { DataTypes } = require('sequelize');
+const { connection } = require('../config.db'); // Importar la conexión directamente
 
-module.exports = (sequelize, DataTypes) => {
-  const NaveImperial = sequelize.define('NaveImperial', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    nombre: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    clase: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    tripulacion: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    estado_operativo: {
-      type: DataTypes.ENUM('activo', 'en_reparacion', 'destruido'),
-      allowNull: false,
-      defaultValue: 'activo',
-    },
-  }, {
-    tableName: 'naves_imperiales',
-    timestamps: true,
-  });
+const NaveImperial = connection.define('NaveImperial', {
+ id: {
+ type: DataTypes.INTEGER,
+ primaryKey: true,
+ autoIncrement: true,
+},
+nombre: {
+ type: DataTypes.STRING(100),
+ allowNull: false,
+},
+clase: {
+ type: DataTypes.STRING(100),
+ allowNull: false,
+ },
+ tripulacion: {
+ type: DataTypes.INTEGER,
+ allowNull: false,
+ },
+ estado_operativo: {
+ type: DataTypes.ENUM('activo', 'en_reparacion', 'destruido'),
+ allowNull: false,
+ defaultValue: 'activo',
+ },
+}, {
+ tableName: 'naves_imperiales',
+ timestamps: true,
+});
 
-  // Aquí podrías definir asociaciones en el futuro si quisieras
-  // NaveImperial.associate = (models) => {
-  //   ...
-  // };
-
-  return NaveImperial;
-};
+module.exports = { NaveImperial }; // Exportar como un objeto

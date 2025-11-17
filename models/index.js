@@ -1,33 +1,26 @@
 /**
- * CORRECCIÓN:
- * Se restaura el 'models/index.js' original de tu proyecto y SE AÑADE
- * la línea para cargar el nuevo modelo 'NaveImperialModel'.
- * Este archivo es el que realmente exporta el objeto 'db' que usan
- * todos los servicios.
+ * CORRECCIÓN 2:
+ * Se restaura el 'models/index.js' a su rol original de "agregador".
+ * Simplemente importa todos los modelos y los vuelve a exportar.
  */
-const { Sequelize, DataTypes } = require('sequelize');
-const { connection } = require('../config.db'); // Tu conexión principal
-const db = {};
 
-// Importar modelos existentes
-db.Profile = require('./ProfileModel')(connection, DataTypes);
-db.State = require('./StateModel')(connection, DataTypes);
-db.Category = require('./CategoryModel')(connection, DataTypes);
-db.User = require('./UserModel')(connection, DataTypes);
-db.New = require('./NewModel')(connection, DataTypes);
+// Importar todos los modelos existentes
+const { Profile } = require('./ProfileModel');
+const { State } = require('./StateModel');
+const { Category } = require('./CategoryModel');
+const { User } = require('./UserModel');
+const { New } = require('./NewModel');
 
 // --- AÑADIR ESTA LÍNEA PARA EL NUEVO MODELO ---
-db.NaveImperial = require('./NaveImperialModel')(connection, DataTypes);
+const { NaveImperial } = require('./NaveImperialModel');
 // ------------------------------------------
 
-// Definir asociaciones
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
-
-db.Sequelize = Sequelize;
-db.connection = connection;
-
-module.exports = db;
+// Exportar todos los modelos como un solo objeto
+module.exports = {
+    Profile,
+    State,
+    Category,
+    User,
+    New,
+    NaveImperial // Añadir el nuevo modelo a la exportación
+};
