@@ -3,9 +3,15 @@ const cors = require('cors');
 const { connectToDatabase } = require('./config.db');
 const { setupDatabase } = require('./setup-database');
 const { requestLogger } = require('./middlewares/requestLogger.middleware');
-const apiRoutes = require('./routes');
 const { seedDatabase } = require('./seedDatabase');
 const { PORT } = require('./config');
+
+// Importar rutas
+const authRoutes = require('./routes/AuthRoute');
+const usersRoutes = require('./routes/users.routes');
+const navesRoutes = require('./routes/naves.routes');
+const emperadoresRoutes = require('./routes/emperadores.routes');
+const misionesRoutes = require('./routes/misiones.routes');
 
 // Importar todos los modelos para asegurar que las relaciones se establezcan
 require('./models');
@@ -19,22 +25,25 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(requestLogger);
 
 // Rutas principales
-app.use('/api', apiRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/naves', navesRoutes);
+app.use('/api/emperadores', emperadoresRoutes);
+app.use('/api/misiones', misionesRoutes);
 
 // Ruta de bienvenida
 app.get('/', (req, res) => {
     res.json({
         success: true,
-        message: '🗞️ API de Noticias - Servidor activo',
+        message: '🌌 API Imperial del Backend - Servidor activo',
         version: '1.0.0',
         timestamp: new Date().toISOString(),
         endpoints: {
-            api: '/api',
-            profiles: '/api/profiles',
-            states: '/api/states', 
-            categories: '/api/categories',
+            auth: '/api/auth',
             users: '/api/users',
-            news: '/api/news'
+            naves: '/api/naves',
+            emperadores: '/api/emperadores',
+            misiones: '/api/misiones'
         }
     });
 });
@@ -45,12 +54,11 @@ app.use('*', (req, res) => {
         success: false,
         message: `Ruta no encontrada: ${req.method} ${req.originalUrl}`,
         available_routes: {
-            api: '/api',
-            profiles: '/api/profiles',
-            states: '/api/states',
-            categories: '/api/categories', 
+            auth: '/api/auth',
             users: '/api/users',
-            news: '/api/news'
+            naves: '/api/naves',
+            emperadores: '/api/emperadores',
+            misiones: '/api/misiones'
         }
     });
 });
@@ -81,21 +89,17 @@ const startServer = async () => {
         // Iniciar el servidor
         app.listen(PORT, () => {
             console.log('🚀 ==========================================');
-            console.log(`🗞️  API de Noticias - Servidor iniciado`);
+            console.log(`🌌 API Imperial - Servidor iniciado`);
             console.log(`📡 Puerto: ${PORT}`);
             console.log(`🌐 URL: http://localhost:${PORT}`);
-            console.log(`📚 API Base: http://localhost:${PORT}/api`);
             console.log('🚀 ==========================================');
             console.log('');
             console.log('📋 Endpoints disponibles:');
-            console.log(`   GET    /api                    - Información de la API`);
-            console.log(`   GET    /api/profiles           - Obtener perfiles`);
-            console.log(`   GET    /api/states             - Obtener estados`);
-            console.log(`   GET    /api/categories         - Obtener categorías`);
-            console.log(`   GET    /api/users              - Obtener usuarios`);
-            console.log(`   GET    /api/news               - Obtener noticias`);
-            console.log('');
-            console.log('💡 Tip: Usa GET /api para ver todos los endpoints disponibles');
+            console.log(`   /api/auth`);
+            console.log(`   /api/users`);
+            console.log(`   /api/naves`);
+            console.log(`   /api/emperadores`);
+            console.log(`   /api/misiones`);
             console.log('');
         });
         

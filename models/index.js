@@ -1,19 +1,16 @@
 'use strict';
-
 const { Sequelize, DataTypes } = require('sequelize');
-const { connection } = require('../config.db');
+const { connection } = require('../config.db'); // Importar la conexión configurada
 
 const db = {};
 
-// Importar todos los modelos
-db.Profile = require('./ProfileModel')(connection, DataTypes);
-db.State = require('./StateModel')(connection, DataTypes);
-db.Category = require('./CategoryModel')(connection, DataTypes);
+// Cargar los únicos modelos que nos importan
 db.User = require('./UserModel')(connection, DataTypes);
-db.New = require('./NewModel')(connection, DataTypes);
 db.NaveImperial = require('./NaveImperialModel')(connection, DataTypes);
+db.Emperador = require('./EmperadorModel')(connection, DataTypes);
+db.Mision = require('./MisionModel')(connection, DataTypes);
 
-// Asociar modelos si es necesario
+// Ejecutar asociaciones si existen
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
