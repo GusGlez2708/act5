@@ -1,15 +1,36 @@
 const { Sequelize } = require('sequelize');
-const { DB_HOST, DB_NAME, DB_PASSWORD, DB_USER, DB_PORT } = require('./config.js');
+const { DB_HOST, DB_NAME, DB_PASSWORD, DB_USER, DB_PORT, DATABASE_URL } = require('./config.js');
 
-const connection = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
-    host: DB_HOST,
-    dialect: 'mysql',
-    port: DB_PORT,
-    logging: false, // Desactivar logs de SQL en consola
-    define: {
-        timestamps: true // Activar createdAt y updatedAt automáticamente
-    }
-});
+let connection;
+
+if (DATABASE_URL) {
+    // Configuración para producción (Clever Cloud, Render, etc.)
+    connection = new Sequelize(DATABASE_URL, {
+        dialect: 'mysql',
+        protocol: 'mysql',
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        },
+        logging: false,
+        define: {
+            timestamps: true
+        }
+    });
+} else {
+    // Configuración para desarrollo local
+    connection = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+        host: DB_HOST,
+        dialect: 'mysql',
+        port: DB_PORT,
+        logging: false, // Desactivar logs de SQL en consola
+        define: {
+            timestamps: true // Activar createdAt y updatedAt automáticamente
+        }
+    });
+}
 
 const connectToDatabase = async () => {
     try {

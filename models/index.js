@@ -4,6 +4,7 @@ const { State } = require('./StateModel');
 const { Category } = require('./CategoryModel');
 const { User } = require('./UserModel');
 const { New } = require('./NewModel');
+const { NaveImperial } = require('./NaveImperialModel');
 
 // Exportar todos los modelos
 module.exports = {
@@ -11,5 +12,6 @@ module.exports = {
     State,
     Category,
     User,
-    New
+    New,
+    NaveImperial
 };

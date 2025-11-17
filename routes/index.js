@@ -5,6 +5,7 @@ const categoriesRouter = require('./categories.routes');
 const usersRouter = require('./users.routes');
 const newsRouter = require('./news.routes');
 const authRouter = require('./AuthRoute');
+const navesRouter = require('./naves.routes');
 
 const router = Router();
 
@@ -15,6 +16,7 @@ router.use('/categories', categoriesRouter);
 router.use('/users', usersRouter);
 router.use('/news', newsRouter);
 router.use('/auth', authRouter);
+router.use('/naves', navesRouter);
 
 // Ruta de información de la API
 router.get('/', (req, res) => {
@@ -27,7 +29,8 @@ router.get('/', (req, res) => {
             states: '/api/states',
             categories: '/api/categories',
             users: '/api/users',
-            news: '/api/news'
+            news: '/api/news',
+            naves: '/api/naves'
         },
         documentation: {
             base_url: req.protocol + '://' + req.get('host'),
