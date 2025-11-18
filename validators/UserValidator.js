@@ -1,6 +1,5 @@
 const { check } = require('express-validator');
 const { User } = require('../models/UserModel');
-const { Profile } = require('../models/ProfileModel');
 
 const validatorUserCreate = [
     check('nombre').notEmpty().withMessage('El campo nombre es obligatorio')
@@ -18,13 +17,11 @@ const validatorUserCreate = [
 
     check('correo').notEmpty().withMessage('El campo correo es obligatorio')
         .isEmail().withMessage('Debe ser un correo valido')
-        .custom((value, { request }) => {
-            return User.findOne({ where: { correo: value } })
-                .then((user) => {
-                    if (user) {
-                        throw new Error('Ya existe un usuario con el mismo correo');
-                    }
-                });
+        .custom(async (value, { req }) => { // Changed to async custom validator
+            const user = await User.findOne({ where: { correo: value } });
+            if (user) {
+                throw new Error('Ya existe un usuario con el mismo correo');
+            }
         }),
 
     check('contraseña').notEmpty().withMessage('El campo contraseña es obligatorio')
@@ -32,15 +29,8 @@ const validatorUserCreate = [
         .isLength({ min: 8 }).withMessage('El campo debe tener minimo 8 caracteres'),
 
     check('perfil_id').notEmpty().withMessage('El campo perfil id es obligatorio')
-        .isInt().withMessage('El campo perfil id debe ser numero')
-        .custom((value, { request }) => {
-            return Profile.findOne({ where: { id: value } })
-                .then((profile) => {
-                    if (!profile) {
-                        throw new Error('No existe un perfil con ese id');
-                    }
-                });
-        }),
+        .isInt().withMessage('El campo perfil id debe ser numero'),
+        // Removed custom validation for Profile existence as ProfileModel is deleted
 ];
 
 
@@ -64,15 +54,8 @@ const validatorUserUpdate = [
         .isLength({ min: 8 }).withMessage('El campo debe tener minimo 8 caracteres'),
 
     check('perfil_id').optional()
-        .isInt().withMessage('El campo perfil id debe ser numero')
-        .custom((value, { request }) => {
-            return Profile.findOne({ where: { id: value } })
-                .then((profile) => {
-                    if (!profile) {
-                        throw new Error('No existe un perfil con ese id');
-                    }
-                });
-        }),
+        .isInt().withMessage('El campo perfil id debe ser numero'),
+        // Removed custom validation for Profile existence as ProfileModel is deleted
 ];
 
 module.exports = {
