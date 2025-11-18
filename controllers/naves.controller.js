@@ -1,9 +1,9 @@
 const { validationResult } = require('express-validator');
-const navesService = require('../services/naves.service');
+const { getAllNaves: serviceGetAllNaves, getNaveById: serviceGetNaveById, createNave: serviceCreateNave, updateNave: serviceUpdateNave, deleteNave: serviceDeleteNave } = require('../services/naves.service');
 
 const getAllNaves = async (req, res) => {
   try {
-    const naves = await navesService.getAllNaves();
+    const naves = await serviceGetAllNaves();
     res.status(200).json(naves);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -13,7 +13,7 @@ const getAllNaves = async (req, res) => {
 const getNaveById = async (req, res) => {
   try {
     const { id } = req.params;
-    const nave = await navesService.getNaveById(id);
+    const nave = await serviceGetNaveById(id);
     if (nave) {
       res.status(200).json(nave);
     } else {
@@ -32,7 +32,7 @@ const createNave = async (req, res) => {
 
   try {
     const naveData = req.body;
-    const newNave = await navesService.createNave(naveData);
+    const newNave = await serviceCreateNave(naveData);
     res.status(201).json(newNave);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -48,7 +48,7 @@ const updateNave = async (req, res) => {
   try {
     const { id } = req.params;
     const naveData = req.body;
-    const updatedNave = await navesService.updateNave(id, naveData);
+    const updatedNave = await serviceUpdateNave(id, naveData);
     if (updatedNave) {
       res.status(200).json(updatedNave);
     } else {
@@ -62,7 +62,7 @@ const updateNave = async (req, res) => {
 const deleteNave = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await navesService.deleteNave(id);
+    const result = await serviceDeleteNave(id);
     if (result) {
       res.status(200).json({ message: 'Nave eliminada' });
     } else {
